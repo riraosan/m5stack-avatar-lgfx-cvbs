@@ -5,7 +5,7 @@
 #ifndef FACES_DOGFACE_H_
 #define FACES_DOGFACE_H_
 
-#include <M5Unified.h> // TODO(meganetaaan): include only the Sprite function not a whole library
+#include <M5Unified.h>  // TODO(meganetaaan): include only the Sprite function not a whole library
 #include "../BoundingRect.h"
 #include "../DrawContext.h"
 #include "../Drawable.h"
@@ -13,15 +13,15 @@
 namespace m5avatar {
 class DogEye : public Drawable {
   void draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) {
-    uint32_t cx = rect.getCenterX();
-    uint32_t cy = rect.getCenterY();
-    Gaze g = ctx->getGaze();
-    ColorPalette *cp = ctx->getColorPalette();
-    uint16_t primaryColor = ctx->getColorDepth() == 1 ? 1 : cp->get(COLOR_PRIMARY);
-    uint16_t backgroundColor = ctx->getColorDepth() == 1 ? ERACER_COLOR : cp->get(COLOR_BACKGROUND);
-    uint32_t offsetX = g.getHorizontal() * 8;
-    uint32_t offsetY = g.getVertical() * 5;
-    float eor = ctx->getEyeOpenRatio();
+    uint32_t      cx              = rect.getCenterX();
+    uint32_t      cy              = rect.getCenterY();
+    Gaze          g               = ctx->getGaze();
+    ColorPalette *cp              = ctx->getColorPalette();
+    uint16_t      primaryColor    = COLOR_DEPTH == 1 ? 1 : cp->get(COLOR_PRIMARY);
+    uint16_t      backgroundColor = COLOR_DEPTH == 1 ? ERACER_COLOR : cp->get(COLOR_BACKGROUND);
+    uint32_t      offsetX         = g.getHorizontal() * 8;
+    uint32_t      offsetY         = g.getVertical() * 5;
+    float         eor             = ctx->getEyeOpenRatio();
 
     if (eor == 0) {
       // eye closed
@@ -39,13 +39,13 @@ class DogEye : public Drawable {
 };
 
 class DogMouth : public Drawable {
- private:
+private:
   uint16_t minWidth;
   uint16_t maxWidth;
   uint16_t minHeight;
   uint16_t maxHeight;
 
- public:
+public:
   DogMouth() : DogMouth(50, 90, 4, 60) {}
   DogMouth(uint16_t minWidth, uint16_t maxWidth, uint16_t minHeight,
            uint16_t maxHeight)
@@ -54,13 +54,13 @@ class DogMouth : public Drawable {
         minHeight{minHeight},
         maxHeight{maxHeight} {}
   void draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) {
-    uint16_t primaryColor = ctx->getColorDepth() == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
-    uint16_t backgroundColor = ctx->getColorDepth() == 1 ? ERACER_COLOR : ctx->getColorPalette()->get(COLOR_BACKGROUND);
-    uint32_t cx = rect.getCenterX();
-    uint32_t cy = rect.getCenterY();
-    float openRatio = ctx->getMouthOpenRatio();
-    uint32_t h = minHeight + (maxHeight - minHeight) * openRatio;
-    uint32_t w = minWidth + (maxWidth - minWidth) * (1 - openRatio);
+    uint16_t primaryColor    = COLOR_DEPTH == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
+    uint16_t backgroundColor = COLOR_DEPTH == 1 ? ERACER_COLOR : ctx->getColorPalette()->get(COLOR_BACKGROUND);
+    uint32_t cx              = rect.getCenterX();
+    uint32_t cy              = rect.getCenterY();
+    float    openRatio       = ctx->getMouthOpenRatio();
+    uint32_t h               = minHeight + (maxHeight - minHeight) * openRatio;
+    uint32_t w               = minWidth + (maxWidth - minWidth) * (1 - openRatio);
     if (h > minHeight) {
       spi->fillEllipse(cx, cy, w / 2, h / 2, primaryColor);
       spi->fillEllipse(cx, cy, w / 2 - 4, h / 2 - 4, TFT_RED);
@@ -75,13 +75,19 @@ class DogMouth : public Drawable {
 };
 
 class DogFace : public Face {
- public:
+public:
   DogFace()
       : Face(new DogMouth(), new BoundingRect(168, 163), new DogEye(),
              new BoundingRect(103, 80), new DogEye(),
              new BoundingRect(106, 240), new Eyeblow(15, 2, false),
              new BoundingRect(67, 96), new Eyeblow(15, 2, true),
              new BoundingRect(72, 230)) {}
+  DogFace(LGFX_Device *gfx)
+      : Face(new DogMouth(), new BoundingRect(168, 163), new DogEye(),
+             new BoundingRect(103, 80), new DogEye(),
+             new BoundingRect(106, 240), new Eyeblow(15, 2, false),
+             new BoundingRect(67, 96), new Eyeblow(15, 2, true),
+             new BoundingRect(72, 230), gfx) {}
 };
 
 }  // namespace m5avatar

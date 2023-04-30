@@ -5,48 +5,73 @@
 #ifndef FACE_H_
 #define FACE_H_
 
+#include <M5Unified.h>
 #include "Balloon.h"
 #include "BoundingRect.h"
 #include "Eye.h"
 #include "Eyeblow.h"
 #include "Mouth.h"
 #include "Effect.h"
-
+// extern LGFX lcd;
+// class  LGFX lcd;
 namespace m5avatar {
 
 class Face {
- private:
-  Drawable *mouth;
-  Drawable *eyeR;
-  Drawable *eyeL;
-  Drawable *eyeblowR;
-  Drawable *eyeblowL;
+private:
+  Drawable     *mouth;
+  Drawable     *eyeR;
+  Drawable     *eyeL;
+  Drawable     *eyeblowR;
+  Drawable     *eyeblowL;
   BoundingRect *mouthPos;
   BoundingRect *eyeRPos;
   BoundingRect *eyeLPos;
   BoundingRect *eyeblowRPos;
   BoundingRect *eyeblowLPos;
   BoundingRect *boundingRect;
-  M5Canvas *sprite;
-  M5Canvas *tmpSprite;
+  M5Canvas     *sprite;
+  M5Canvas     *tmpSpr;
 
- public:
+public:
   // constructor
   Face();
   Face(Drawable *mouth, Drawable *eyeR, Drawable *eyeL, Drawable *eyeblowR,
        Drawable *eyeblowL);
-  // TODO(meganetaaan): apply builder pattern
+
   Face(Drawable *mouth, BoundingRect *mouthPos, Drawable *eyeR,
        BoundingRect *eyeRPos, Drawable *eyeL, BoundingRect *eyeLPos,
        Drawable *eyeblowR, BoundingRect *eyeblowRPos, Drawable *eyeblowL,
        BoundingRect *eyeblowLPos);
+
+  // Face(LGFX_Device* device);
+
+  Face(Drawable *mouth, Drawable *eyeR, Drawable *eyeL, Drawable *eyeblowR,
+       Drawable *eyeblowL, LGFX_Device *device);
+
+  // TODO(meganetaaan): apply builder pattern
   Face(Drawable *mouth, BoundingRect *mouthPos, Drawable *eyeR,
        BoundingRect *eyeRPos, Drawable *eyeL, BoundingRect *eyeLPos,
        Drawable *eyeblowR, BoundingRect *eyeblowRPos, Drawable *eyeblowL,
+       BoundingRect *eyeblowLPos, LGFX_Device *device);
+
+  // by @riraosan
+  Face(M5Canvas *canvas);
+  Face(Drawable     *mouth,
+       BoundingRect *mouthPos,
+       Drawable     *eyeR,
+       BoundingRect *eyeRPos,
+       Drawable     *eyeL,
+       BoundingRect *eyeLPos,
+       Drawable     *eyeblowR,
+       BoundingRect *eyeblowRPos,
+       Drawable     *eyeblowL,
        BoundingRect *eyeblowLPos,
-       BoundingRect *boundingRect, M5Canvas *spr, M5Canvas *tmpSpr);
+       BoundingRect *boundingRect,
+       M5Canvas     *sprite,
+       M5Canvas     *tmpSpr);
+
   ~Face();
-  Face(const Face &other) = default;
+  Face(const Face &other)            = default;
   Face &operator=(const Face &other) = default;
 
   Drawable *getLeftEye();
@@ -55,7 +80,7 @@ class Face {
   // void setParts(PartsType p, Drawable parts);
   // Drawable *getParts(PartsType p);
 
-  Drawable *getMouth();
+  Drawable     *getMouth();
   BoundingRect *getBoundingRect();
 
   void setLeftEye(Drawable *eye);

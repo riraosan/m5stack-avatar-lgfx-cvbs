@@ -30,12 +30,12 @@ int16_t BoundingRect::getWidth() { return width; }
 int16_t BoundingRect::getHeight() { return height; }
 
 void BoundingRect::setPosition(int16_t top, int16_t left) {
-  this->top = top;
+  this->top  = top;
   this->left = left;
 }
 
 void BoundingRect::setSize(int16_t width, int16_t height) {
-  this->width = width;
+  this->width  = width;
   this->height = height;
 }
 }  // namespace m5avatar

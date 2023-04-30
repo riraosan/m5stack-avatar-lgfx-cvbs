@@ -4,15 +4,17 @@
 
 #ifndef EFFECT_H_
 #define EFFECT_H_
+
 #define LGFX_USE_V1
 #include <M5GFX.h>
 #include "DrawContext.h"
 #include "Drawable.h"
+extern int BatteryLevel;
 
 namespace m5avatar {
 
 class Effect final : public Drawable {
- private:
+private:
   void drawBubbleMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
                       uint16_t color) {
     drawBubbleMark(spi, x, y, r, color, 0);
@@ -26,12 +28,12 @@ class Effect final : public Drawable {
   }
 
   void drawSweatMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                 uint16_t color) {
+                     uint16_t color) {
     drawSweatMark(spi, x, y, r, color, 0);
   }
 
   void drawSweatMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                 uint16_t color, float offset) {
+                     uint16_t color, float offset) {
     y = y + floor(5 * offset);
     r = r + floor(r * 0.2 * offset);
     spi->fillCircle(x, y, r, color);
@@ -54,12 +56,12 @@ class Effect final : public Drawable {
   }
 
   void drawAngerMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                     uint16_t color, uint32_t bColor) {
+                     uint16_t color, uint16_t bColor) {
     drawAngerMark(spi, x, y, r, color, bColor, 0);
   }
 
   void drawAngerMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                     uint16_t color, uint32_t bColor, float offset) {
+                     uint16_t color, uint16_t bColor, float offset) {
     r = r + abs(r * 0.4 * offset);
     spi->fillRect(x - (r / 3), y - r, (r * 2) / 3, r * 2, color);
     spi->fillRect(x - r, y - (r / 3), r * 2, (r * 2) / 3, color);
@@ -68,12 +70,12 @@ class Effect final : public Drawable {
   }
 
   void drawHeartMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                 uint16_t color) {
+                     uint16_t color) {
     drawHeartMark(spi, x, y, r, color, 0);
   }
 
   void drawHeartMark(M5Canvas *spi, uint32_t x, uint32_t y, uint32_t r,
-                 uint16_t color, float offset) {
+                     uint16_t color, float offset) {
     r = r + floor(r * 0.4 * offset);
     spi->fillCircle(x - r / 2, y, r / 2, color);
     spi->fillCircle(x + r / 2, y, r / 2, color);
@@ -83,35 +85,41 @@ class Effect final : public Drawable {
                       x + r / 2 + a, y + a, color);
   }
 
- public:
+public:
   // constructor
-  Effect() = default;
-  ~Effect() = default;
-  Effect(const Effect &other) = default;
+  Effect()                               = default;
+  ~Effect()                              = default;
+  Effect(const Effect &other)            = default;
   Effect &operator=(const Effect &other) = default;
-  void draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) override {
-    uint16_t primaryColor = ctx->getColorDepth() == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
-    uint16_t bgColor = ctx->getColorDepth() == 1 ? ERACER_COLOR : ctx->getColorPalette()->get(COLOR_BACKGROUND);
-    float offset = ctx->getBreath();
-    Expression exp = ctx->getExpression();
+  void    draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) override {
+    uint32_t   primaryColor = COLOR_DEPTH == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
+    uint32_t   bgColor      = COLOR_DEPTH == 1 ? ERACER_COLOR : ctx->getColorPalette()->get(COLOR_BACKGROUND);
+    float      offset       = ctx->getBreath();
+    Expression exp          = ctx->getExpression();
+    //    spi->fillRect(19, 21, 22, 12, TFT_BLACK);
+    //    if(BatteryLevel > 20) {
+    //      spi->fillRect(20, 22, BatteryLevel/5, 10, TFT_GREEN);
+    //    } else {
+    //      spi->fillRect(20, 22, BatteryLevel/5, 10, TFT_RED);
+    //    }
     switch (exp) {
-      case Expression::Doubt:
+         case Expression::Doubt:
         drawSweatMark(spi, 290, 110, 7, primaryColor, -offset);
         break;
-      case Expression::Angry:
+         case Expression::Angry:
         drawAngerMark(spi, 280, 50, 12, primaryColor, bgColor, offset);
         break;
-      case Expression::Happy:
+         case Expression::Happy:
         drawHeartMark(spi, 280, 50, 12, primaryColor, offset);
         break;
-      case Expression::Sad:
+         case Expression::Sad:
         drawChillMark(spi, 270, 0, 30, primaryColor, offset);
         break;
-      case Expression::Sleepy:
+         case Expression::Sleepy:
         drawBubbleMark(spi, 290, 40, 10, primaryColor, offset);
         drawBubbleMark(spi, 270, 52, 6, primaryColor, -offset);
         break;
-      default:
+         default:
         // noop
         break;
     }

@@ -79,11 +79,31 @@ Avatar::Avatar(Face *face)
       speechText{""},
       colorDepth{1}{}
 
+// Avatar::Avatar(LGFX_Device* device) : Avatar(new Face(device), device) {}
+// Avatar::Avatar(LGFX_Device *device) : Avatar(new Face(device)) {}
+//@riraosan
+Avatar::Avatar(M5Canvas *sprite) : Avatar(new Face(sprite)) {}
+
+// Avatar::Avatar(Face *face, LGFX_Device* device)
+//     : face{face},
+//       _isDrawing{true},
+//       expression{Expression::Neutral},
+//       breath{0},
+//       eyeOpenRatio{1},
+//       mouthOpenRatio{0},
+//       gazeV{0},
+//       gazeH{0},
+//       rotation{0},
+//       scale{1},
+//       palette{ColorPalette()},
+//       speechText{""},
+//       device(device) {}
+
 void Avatar::setFace(Face *face) { this->face = face; }
 
 Face *Avatar::getFace() const { return face; }
 
-void Avatar::addTask(TaskFunction_t f, const char* name) {
+void Avatar::addTask(TaskFunction_t f, const char *name) {
   DriveContext *ctx = new DriveContext(this);
   // TODO(meganetaaan): set a task handler
   xTaskCreate(f, /* Function to implement the task */
@@ -108,7 +128,7 @@ void Avatar::init(int colorDepth) {
 
 void Avatar::stop() { _isDrawing = false; }
 
-void Avatar::start(int colorDepth) { 
+void Avatar::start(int colorDepth) {
   // if the task already started, don't create another task;
   if (_isDrawing) return;
   _isDrawing = true;
@@ -116,30 +136,33 @@ void Avatar::start(int colorDepth) {
   this->colorDepth = colorDepth;
   DriveContext *ctx = new DriveContext(this);
   // TODO(meganetaaan): keep handle of these tasks
-  xTaskCreate(drawLoop,     /* Function to implement the task */
-                          "drawLoop",   /* Name of the task */
-                          2048,         /* Stack size in words */
-                          ctx,          /* Task input parameter */
-                          1,            /* Priority of the task */
-                          NULL);        /* Task handle. */
+  xTaskCreatePinnedToCore(
+              drawLoop,   /* Function to implement the task */
+              "drawLoop", /* Name of the task */
+              4096,       /* Stack size in words */
+              ctx,        /* Task input parameter */
+              1,          /* Priority of the task */
+              NULL,       /* Task handle. */
+              PRO_CPU_NUM); //modify by @riraosan
+
   xTaskCreate(saccade,      /* Function to implement the task */
-                          "saccade",    /* Name of the task */
-                          1024,         /* Stack size in words */
-                          ctx,          /* Task input parameter */
-                          2,            /* Priority of the task */
-                          NULL);        /* Task handle. */
+              "saccade",    /* Name of the task */
+              1024,         /* Stack size in words */
+              ctx,          /* Task input parameter */
+              2,            /* Priority of the task */
+              NULL);        /* Task handle. */
   xTaskCreate(updateBreath, /* Function to implement the task */
-                          "breath",     /* Name of the task */
-                          1024,         /* Stack size in words */
-                          ctx,          /* Task input parameter */
-                          2,            /* Priority of the task */
-                          NULL);        /* Task handle. */
+              "breath",     /* Name of the task */
+              1024,         /* Stack size in words */
+              ctx,          /* Task input parameter */
+              2,            /* Priority of the task */
+              NULL);        /* Task handle. */
   xTaskCreate(blink,        /* Function to implement the task */
-                          "blink",      /* Name of the task */
-                          1024,         /* Stack size in words */
-                          ctx,          /* Task input parameter */
-                          2,            /* Priority of the task */
-                          NULL);        /* Task handle. */
+              "blink",      /* Name of the task */
+              1024,         /* Stack size in words */
+              ctx,          /* Task input parameter */
+              2,            /* Priority of the task */
+              NULL);        /* Task handle. */
 }
 
 void Avatar::draw() {
@@ -190,8 +213,8 @@ void Avatar::setGaze(float vertical, float horizontal) {
 }
 
 void Avatar::getGaze(float *vertical, float *horizontal) {
-  *vertical = this->gazeV;
-  *horizontal = this->gazeH; 
+  *vertical   = this->gazeV;
+  *horizontal = this->gazeH;
 }
 
 void Avatar::setSpeechText(const char *speechText) {

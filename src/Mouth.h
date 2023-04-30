@@ -5,24 +5,24 @@
 #ifndef MOUTH_H_
 #define MOUTH_H_
 
-#include <M5GFX.h>
+#include <M5Unified.h>
 #include "BoundingRect.h"
 #include "DrawContext.h"
 #include "Drawable.h"
 
 namespace m5avatar {
 class Mouth final : public Drawable {
- private:
+private:
   uint16_t minWidth;
   uint16_t maxWidth;
   uint16_t minHeight;
   uint16_t maxHeight;
 
- public:
+public:
   // constructor
-  Mouth() = delete;
-  ~Mouth() = default;
-  Mouth(const Mouth &other) = default;
+  Mouth()                              = delete;
+  ~Mouth()                             = default;
+  Mouth(const Mouth &other)            = default;
   Mouth &operator=(const Mouth &other) = default;
   Mouth(uint16_t minWidth, uint16_t maxWidth, uint16_t minHeight,
         uint16_t maxHeight);

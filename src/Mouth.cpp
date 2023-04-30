@@ -14,14 +14,14 @@ Mouth::Mouth(uint16_t minWidth, uint16_t maxWidth, uint16_t minHeight,
       maxHeight{maxHeight} {}
 
 void Mouth::draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) {
-  uint16_t primaryColor = ctx->getColorDepth() == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
-  float breath = _min(1.0f, ctx->getBreath());
-  float openRatio = ctx->getMouthOpenRatio();
-  int h = minHeight + (maxHeight - minHeight) * openRatio;
-  int w = minWidth + (maxWidth - minWidth) * (1 - openRatio);
-  int x = rect.getLeft() - w / 2;
-  int y = rect.getTop() - h / 2 + breath * 2;
-  spi->fillRect(x, y, w, h, primaryColor);
+  uint32_t primaryColor = COLOR_DEPTH == 1 ? 1 : ctx->getColorPalette()->get(COLOR_PRIMARY);
+  float    breath       = _min(1.0f, ctx->getBreath());
+  float    openRatio    = ctx->getMouthOpenRatio();
+  int      h            = minHeight + (maxHeight - minHeight) * openRatio;
+  int      w            = minWidth + (maxWidth - minWidth) * (1 - openRatio);
+  int      x            = rect.getLeft() - w / 2;
+  int      y            = rect.getTop() - h / 2 + breath * 2;
+  spi->fillRect(x, y, w, h, (uint16_t)primaryColor);
 }
 
 }  // namespace m5avatar

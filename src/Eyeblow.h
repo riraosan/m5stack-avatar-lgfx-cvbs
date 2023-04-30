@@ -13,18 +13,20 @@
 
 namespace m5avatar {
 class Eyeblow final : public Drawable {
- private:
+private:
   uint16_t width;
   uint16_t height;
-  bool isLeft;
+  bool     isLeft;
 
- public:
+public:
   // constructor
   Eyeblow() = delete;
   Eyeblow(uint16_t w, uint16_t h, bool isLeft);
   ~Eyeblow() = default;
-  Eyeblow(const Eyeblow &other) = default;
+
+  Eyeblow(const Eyeblow &other)            = default;
   Eyeblow &operator=(const Eyeblow &other) = default;
+
   void draw(M5Canvas *spi, BoundingRect rect,
             DrawContext *drawContext) override;
 };

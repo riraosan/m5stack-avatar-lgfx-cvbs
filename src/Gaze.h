@@ -7,15 +7,15 @@
 
 namespace m5avatar {
 class Gaze {
- private:
+private:
   float v;
   float h;
 
- public:
+public:
   Gaze();
   Gaze(float v, float h);
-  ~Gaze() = default;
-  Gaze(const Gaze &other) = default;
+  ~Gaze()                            = default;
+  Gaze(const Gaze &other)            = default;
   Gaze &operator=(const Gaze &other) = default;
   float getVertical() const;
   float getHorizontal() const;
