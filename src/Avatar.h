@@ -25,6 +25,8 @@ private:
   float        scale;
   ColorPalette palette;
   const char  *speechText;
+  int          colorDepth;
+  const lgfx::IFont *speechFont;
 
 public:
   Avatar();
@@ -39,7 +41,7 @@ public:
   ColorPalette getColorPalette() const;
   void         setColorPalette(ColorPalette cp);
   void         setFace(Face *face);
-  void         init(void);
+  void         init(int colorDepth);
   void         setBreath(float f);
   float        getBreath();
   void         setGaze(float vertical, float horizontal);
@@ -54,7 +56,7 @@ public:
   void         setOffset(int offsetX, int offsetY);
   void         draw(void);
   bool         isDrawing();
-  void         start();
+  void         start(int colorDepth);
   void         stop();
   void         addTask(TaskFunction_t f, const char *name);
 };
