@@ -14,14 +14,16 @@ void setup()
   M5.begin();
 
   display.init();
-  display.setPivot((display.width() >> 1) - 35, display.height() >> 1);
+  display.setPivot((display.width() >> 1), display.height() >> 1);
 
   avatar.init(1); // start drawing
+  avatar.setScale(1.0);
+  avatar.setRotation(0);
+  avatar.setSpeechFont(&fonts::Font0);
+  avatar.setSpeechText("Hello World!");
+  avatar.setExpression(Expression::Happy);
 }
 
-  void loop()
-  {
-    // avatar's face updates in another thread
-    // so no need to loop-by-loop rendering
+void loop()
+{
 }
-

@@ -142,10 +142,9 @@ BoundingRect *Face::getBoundingRect() { return boundingRect; }
 void Face::draw(DrawContext *ctx) {
   sprite->setColorDepth(COLOR_DEPTH);
   // NOTE: setting below for 1-bit color depth
-  sprite->setBitmapColor(ctx->getColorPalette()->get(COLOR_PRIMARY),
-                         ctx->getColorPalette()->get(COLOR_BACKGROUND));
+  sprite->setBitmapColor(ctx->getColorPalette()->get(COLOR_PRIMARY),ctx->getColorPalette()->get(COLOR_BACKGROUND));
 
-  if (!sprite->createSprite(boundingRect->getWidth(), boundingRect->getHeight())) {
+  if (!sprite->createSprite(320, 240)) {
     log_e("cannot allocate face sprite");
   }
 
