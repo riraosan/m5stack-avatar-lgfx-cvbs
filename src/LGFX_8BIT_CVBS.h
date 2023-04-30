@@ -38,7 +38,7 @@ public:
       cfg.signal_type = cfg.signal_type_t::NTSC_J;
 
       // GPIO number of output destination settings
-      cfg.pin_dac = 25;  // For using DAC, you can choose only 25 or 26
+      cfg.pin_dac = 26;  // For using DAC, you can choose only 25 or 26
 
       // PSRAM memory allocation settings
       cfg.use_psram = 0;  // 0=PSRAM not used / 1=Half PSRAM and half SRAM / 2=All using PSRAM
