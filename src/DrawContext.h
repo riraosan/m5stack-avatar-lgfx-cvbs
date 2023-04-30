@@ -30,17 +30,19 @@ private:
   const char*         speechText;
   float               rotation = 0.0;
   float               scale    = 1.0;
-  int                 offsetX  = 0;
-  int                 offsetY  = 0;
+  //int                 offsetX  = 0;
+  //int                 offsetY  = 0;
+  int                 colorDepth;
+  const lgfx::IFont  *speechFont;
 
 public:
   DrawContext() = delete;
-  DrawContext(Expression expression, float breath, ColorPalette* const palette,
+  DrawContext(Expression expression, float breath, ColorPalette *const palette,
               Gaze gaze, float eyeOpenRatio, float mouthOpenRatio,
-              const char* speechText);
-  DrawContext(Expression expression, float breath, ColorPalette* const palette,
+              const char *speechText, const lgfx::IFont *speechFont);
+  DrawContext(Expression expression, float breath, ColorPalette *const palette,
               Gaze gaze, float eyeOpenRatio, float mouthOpenRatio,
-              const char* speechText, float rotation, float scale, int offsetX, int offsetY);
+              const char *speechText, float rotation, float scale, int colorDepth, const lgfx::IFont *speechFont);
   ~DrawContext()                                          = default;
   DrawContext(const DrawContext& other)                   = delete;
   DrawContext&        operator=(const DrawContext& other) = delete;
@@ -55,6 +57,8 @@ public:
   Gaze                getGaze() const;
   ColorPalette* const getColorPalette() const;
   const char*         getspeechText() const;
+  int                 getColorDepth() const;
+  const lgfx::IFont   *getSpeechFont() const;
 };
 }  // namespace m5avatar
 

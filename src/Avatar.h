@@ -46,10 +46,12 @@ public:
   float        getBreath();
   void         setGaze(float vertical, float horizontal);
   void         getGaze(float *vertical, float *horizontal);
+  Expression   getExpression(void);
   void         setExpression(Expression exp);
   void         setEyeOpenRatio(float ratio);
   void         setMouthOpenRatio(float ratio);
   void         setSpeechText(const char *speechText);
+  void         setSpeechFont(const lgfx::IFont *speechFont);
   void         setRotation(float radian);
   void         setPosition(int top, int left);
   void         setScale(float scale);
@@ -59,6 +61,7 @@ public:
   void         start(int colorDepth);
   void         stop();
   void         addTask(TaskFunction_t f, const char *name);
+
 };
 
 class DriveContext {
