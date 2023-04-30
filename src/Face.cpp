@@ -185,16 +185,9 @@ void Face::draw(DrawContext *ctx) {
   // TODO(meganetaaan): rethink responsibility for transform function
   float scale    = ctx->getScale();
   float rotation = ctx->getRotation();
-  //int   offsetX  = ctx->getOffsetX();
-  //int   offsetY  = ctx->getOffsetY();
 
-  if (scale != 1.0 || rotation != 0) {
-    uint16_t w = boundingRect->getWidth();
-    uint16_t h = boundingRect->getHeight();
-    sprite->pushRotateZoom((int)(w / 2), (int)(h / 2), (float)rotation, (float)scale, (float)scale);
-  } else {
-    sprite->pushSprite(boundingRect->getLeft(), boundingRect->getTop());
-  }
+  sprite->pushRotateZoom((float)rotation, (float)scale, (float)scale);
+
   sprite->deleteSprite();
 }
 }  // namespace m5avatar
