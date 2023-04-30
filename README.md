@@ -1,13 +1,8 @@
-# M5Stack-Avatar
+# M5Stack-Avatar for CRT Display(Composite)
 
 [![Powered By PlatformIO](https://img.shields.io/badge/powered-PlatformIO-brightgreen)](https://platformio.org/)
-[![Build Status](https://travis-ci.com/meganetaaan/m5stack-avatar.svg?branch=master)](https://travis-ci.com/meganetaaan/m5stack-avatar)
 
-![M5Stack-Avatar](docs/image/avatar.gif)
 
-Video: https://www.youtube.com/watch?v=C1Hj9kfY5qc
-
-[日本語](README_ja.md)
 
 ## Features
 
@@ -18,6 +13,7 @@ Video: https://www.youtube.com/watch?v=C1Hj9kfY5qc
 * :art:              Color Palette
 * :arrows_clockwise: Move, Zoom and Rotation
 * :two:              Compatible with M5Stack Core2
+* Output to Composite Video Signal(CVBS)
 
 ## Installation
 
@@ -45,7 +41,7 @@ platformio init -d . -b m5stack-core-esp32
 * Install the library and its dependency
 ```sh
 platformio lib install M5Unified
-platformio lib install M5Stack-Avatar
+platformio lib install M5Stack-Avatar-lgfx-cvbs
 ```
 * The library gets downloaded from repository to .piolibdeps directory
 
@@ -53,17 +49,30 @@ platformio lib install M5Stack-Avatar
 
 ```cpp
 
-#include <M5Unified.h>
+#include <M5GFX.h>
+#include <LGFX_8BIT_CVBS.h>
 #include <Avatar.h>
 
 using namespace m5avatar;
 
-Avatar avatar;
+static LGFX_8BIT_CVBS display;
+static M5Canvas sp_avatar(&display);
+
+Avatar avatar(&sp_avatar);
 
 void setup()
 {
   M5.begin();
-  avatar.init(); // start drawing
+
+  display.init();
+  display.setPivot((display.width() >> 1), display.height() >> 1);
+
+  avatar.init(1); // start drawing
+  avatar.setScale(1.0);
+  avatar.setRotation(0);
+  avatar.setSpeechFont(&fonts::Font0);
+  avatar.setSpeechText("Hello World!");
+  avatar.setExpression(Expression::Happy);
 }
 
 void loop()
@@ -73,53 +82,6 @@ void loop()
 }
 ```
 
-### Using LipSync
-
-* setup AquesTalk-ESP32 (http://blog-yama.a-quest.com/?eid=970195).
-  * (For parsing Kainji statement) Copy the dictionary file from above link to the microSD card.
-  * You don't need to copy AquesTalkTTS files. They are included in this library.
-
-* Write below to open avatar mouth according to the audio output.
-
-```cpp
-#include <AquesTalkTTS.h>
-#include <M5Unified.h>
-#include <Avatar.h>
-#include <tasks/LipSync.h>
-
-using namespace m5avatar;
-
-// AquesTalk License Key
-// NULL or wrong value is just ignored
-const char* AQUESTALK_KEY = "XXXX-XXXX-XXXX-XXXX";
-Avatar avatar;
-
-void setup() {
-  int iret;
-  M5.begin();
-  // For Kanji-to-speech mode (requires dictionary file saved on microSD)
-  // iret = TTS.createK(AQUESTALK_KEY);
-  iret = TTS.create(AQUESTALK_KEY);
-  avatar.init();
-  avatar.addTask(lipSync, "lipSync");
-}
-
-void loop() {
-  M5.update();
-  if (M5.BtnA.wasPressed()) {
-    // For Kanji-to-speech mode
-    // TTS.play("こんにちは。", 80);
-    TTS.play("konnichiwa", 80);
-  }
-}
-
-```
-
 ### Further usage
 
 see `examples` directory.
-
-### Migration from 0.7.x to 0.8.x
-
-`M5Stack-Avatar` now depends on `M5Unified`, the integrated library for all devices of M5Stack series.
-Since 0.8.0, Sketches with avatar should include `M5Unified.h` instead of `M5Stack.h` or `M5Core2.h`
