@@ -46,7 +46,7 @@ public:
       // the amplitude strength of the output signal settings
       // ※ If the signal is attenuated because the GPIO has a protective resistor or for some other reason, you should increase the value.
       // ※ Since M5StackCore2 has protection resistors on the GPIOs, we recommend 200.
-      cfg.output_level = 128;  // Initial value 128
+      cfg.output_level = 200;  // Initial value 128
 
       // the strength of the amplitude of the saturation signal settings
       // Decrease the value to decrease saturation, and set to 0 for black and white. Increasing the value increases saturation.
