@@ -12,11 +12,11 @@ public:
       auto cfg = _panel_instance.config();  // Gets the structure for display panel settings
 
       // output resolution settings
-      cfg.memory_width  = 360;  // Output Resolution Width
+      cfg.memory_width  = 320;  // Output Resolution Width
       cfg.memory_height = 240;  // Output resolution Height
 
       // the actual resolution to be used settings
-      cfg.panel_width  = 360 - 8;   // Actual width   (Set a value equal to or smaller than memory_width)
+      cfg.panel_width  = 320 - 8;   // Actual width   (Set a value equal to or smaller than memory_width)
       cfg.panel_height = 240 - 16;  // Actual height  (Set a value equal to or smaller than memory_height)
 
       // the amount of display position offset settings
