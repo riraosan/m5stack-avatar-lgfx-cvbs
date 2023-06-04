@@ -26,8 +26,7 @@ public:
   Mouth &operator=(const Mouth &other) = default;
   Mouth(uint16_t minWidth, uint16_t maxWidth, uint16_t minHeight,
         uint16_t maxHeight);
-  void draw(M5Canvas *spi, BoundingRect rect,
-            DrawContext *drawContext) override;
+  void draw(M5Canvas *spi, BoundingRect rect, DrawContext *drawContext) override;
 };
 
 }  // namespace m5avatar
