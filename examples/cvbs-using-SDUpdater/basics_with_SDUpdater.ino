@@ -131,7 +131,7 @@ void setup()
   avatar.init(1); // start drawing
   avatar.setScale(1.0);
   avatar.setRotation(0);
-  avatar.setSpeechFont(&fonts::Font0);
+  avatar.setSpeechFont(&lgfx::v1::fonts::efontJA_16);
   avatar.setSpeechText("Hello World!");
   avatar.setExpression(Expression::Happy);
 }
